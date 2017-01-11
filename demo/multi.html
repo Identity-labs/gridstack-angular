@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>gridstack-angular demo</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/gridstack/dist/gridstack.css"/>
+    <link rel="stylesheet" href="bower_components/gridstack/dist/gridstack-extra.css"/>
+
+    <style type="text/css">
+        .grid1 {
+            background: #c6ecf1;
+        	min-height: 30px;
+        }
+        .grid-stack-item-content {
+            color: #2c3e50;
+            text-align: center;
+            background-color: #732145;
+        }
+    </style>
+</head>
+<body ng-app="GridStack" ng-controller="DemoCtrl">
+    <div class="container-fluid">
+        <h1>gridstack-angular demo</h1>
+        <p>{{widgets}}</p>
+        <div>
+            <a class="btn btn-primary" ng-click="addWidget()" href="#">Add Widget</a>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-repeat="container in containers" class="container">
+                    <h2>{{container.title}}</h2>
+	                <div gridstack class="grid-stack grid1" options="options" on-change="onChange(event,items)" on-drag-start="onDragStart(event,ui)" on-drag-stop="onDragStop(event,ui)" on-resize-start="onResizeStart(event,ui)" on-resize-stop="onResizeStop(event,ui)">
+	                    <div gridstack-item ng-repeat="w in container.widgets" class="grid-stack-item" gs-item-x="w.x" gs-item-y="w.y"
+	                         gs-item-width="w.width" gs-item-height="w.height" gs-item-autopos="1" on-item-added="onItemAdded(item)" on-item-removed="onItemRemoved(item)">
+	                            <div class="grid-stack-item-content">
+	                                <h3>{{w.title}}</h3>
+	                                <a class="btn btn-primary" ng-click="removeWidget(w)" href="#">remove</a>
+	                            </div>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/jquery-3.1.1.min.js"></script>
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/module/lodash/lodash.min.js"></script>
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/module/angularjs/angular.min.js"></script>
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/module/gridstack/gridstack.min.js"></script>
+    <script src="http://myposeo.ad.g4-dev.fr/i/js/module/gridstack-angular/gridstack-angular.min.js"></script>
+
+    <script type="text/javascript">
+        var app = angular.module('GridStack', ['gridstack-angular']).
+          controller('DemoCtrl', function($scope, $log) {
+
+            $scope.containers = [
+                {title: 'container 1', widgets: [{ title: 'widget 1', x:0, y:0, width:1, height:1 }, { title: 'widget 2', x:0, y:0, width:3, height:1 }]},
+                {title: 'container 2', widgets: [{ title: 'widget 3', x:0, y:0, width:1, height:1 }, { title: 'widget 4', x:0, y:0, width:3, height:1 }]},
+            ];
+
+            $scope.options = {
+                acceptWidgets: '.grid-stack-item',
+                float: false,
+                cellHeight: 200,
+                verticalMargin: 10
+            };
+
+            $scope.addWidget = function() {
+                var newWidget = { x:0, y:0, width:1, height:1 };
+                $scope.widgets.push(newWidget);
+            };
+
+            $scope.removeWidget = function(w) {
+                var index = $scope.widgets.indexOf(w);
+                $scope.widgets.splice(index, 1);
+            };
+
+            $scope.onChange = function(event, items) {
+                $log.log("onChange event: "+event+" items:"+items);
+            };
+
+            $scope.onDragStart = function(event, ui) {
+                $log.log("onDragStart event: "+event+" ui:"+ui);
+            };
+
+            $scope.onDragStop = function(event, ui) {
+                $log.log("onDragStop event: "+event+" ui:"+ui);
+            };
+
+            $scope.onResizeStart = function(event, ui) {
+                $log.log("onResizeStart event: "+event+" ui:"+ui);
+            };
+
+            $scope.onResizeStop = function(event, ui) {
+                $log.log("onResizeStop event: "+event+" ui:"+ui);
+            };
+
+            $scope.onItemAdded = function(item) {
+                $log.log("onItemAdded item: "+item);
+            };
+
+            $scope.onItemRemoved = function(item) {
+                $log.log("onItemRemoved item: "+item);
+            };
+
+        });
+    </script>
+
+</body>
+</html>
